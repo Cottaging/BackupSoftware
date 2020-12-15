@@ -148,27 +148,57 @@ void Huffman::decompress()
     }
 
     Node* root = constructHeap();
-    string code;
-    root->fillCodebook(codebook, code);
+   // string code;
+   // root->fillCodebook(codebook, code);
+    Node* temp = root;
+    char L0R1=NULL;
 
     while (fin >> nextByte) {
         for (int i = 0; i < 8; i++) {
             if ((nextByte >> i) & 0x01)
-                code += '1';
+                L0R1 = '1';
             else
-                code += '0';
-            for (int i = 0; i < 256; i++) {
-                if (codebook[i] == code) {
-                    if (frequencies[i]) {
-                        fout << (unsigned char)i;
-                        code.clear();
-                        frequencies[i]--;
-                        break;
+                L0R1 = '0';
+            //for (int i = 0; i < 256; i++) {
+            //    if (codebook[i] == code) {
+            //        if (frequencies[i]) {
+            //            fout << (unsigned char)i;
+            //            code.clear();
+            //            frequencies[i]--;
+            //            break;
+            //        }
+            //        else
+            //            return;
+            //    }
+            //} // for
+            if (L0R1 == '0') {
+                temp = temp->leftC;
+                if (!temp->rightC && !temp->leftC) {
+                    if (frequencies[temp->data]) {
+                        fout << temp->data;
+                        frequencies[temp->data]--;
+                        temp = root;
+                        
                     }
-                    else
+                    else {
                         return;
+                    }
                 }
-            } // for
+            }
+            else {
+                temp = temp->rightC;
+                if (!temp->rightC && !temp->leftC) {
+                    if (frequencies[temp->data]) {
+                        fout << temp->data;
+                        frequencies[temp->data]--;
+                        temp = root;
+                        
+                    }
+                    else {
+                        return;
+                    }
+                }
+            }
         }
     }
 }

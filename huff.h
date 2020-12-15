@@ -3,8 +3,9 @@
 #include<fstream>
 
 using namespace std;
-
+class Huffman;
 class Node{
+    friend Huffman;
     unsigned char data;
     unsigned int frequency;
     unsigned char min;
@@ -23,7 +24,7 @@ class Heap{
     Node **minHeap;
     int heapSize;
 public:
-    Heap(){heapSize = 0; minHeap = new Node*[257];} // max of 255 characters
+    Heap(){heapSize = 0; minHeap = new Node*[257];} 
     void push(Node *);
     int size(){return heapSize;}
     void pop();

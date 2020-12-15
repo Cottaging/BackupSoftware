@@ -1,7 +1,6 @@
-// Patrick Sheehan
-
 #include <cstdlib>
 #include <string>
+#include<fstream>
 
 using namespace std;
 
@@ -29,4 +28,18 @@ public:
     int size(){return heapSize;}
     void pop();
     Node * top(){return minHeap[1];}
+};
+
+class Huffman {
+    unsigned int frequencies[256] = { 0 };
+    string codebook[256];
+    ifstream fin;
+    ofstream fout;
+public:
+    Huffman(int func, string infilename, string outfilename);
+    ~Huffman();
+    void compress();
+    void putOut();
+    void decompress();
+    Node* constructHeap();
 };

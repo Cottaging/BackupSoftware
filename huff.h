@@ -36,11 +36,13 @@ class Huffman {
     string codebook[256];
     ifstream fin;
     ofstream fout;
+    string infilename, outfilename;
 public:
     Huffman(int func, string infilename, string outfilename);
     ~Huffman();
     void compress();
     void putOut();
+    bool check();
     void decompress();
     Node* constructHeap();
 };

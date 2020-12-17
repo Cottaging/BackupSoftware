@@ -1,5 +1,7 @@
 #include "huff.h"
+#include"md5.h"
 #include <iostream>
+#include<cstdio>
 using namespace std;
 
 void Node:: fillCodebook(string * codebook, string &code) {
@@ -69,6 +71,8 @@ bool Node::operator> (const Node &rhs){
 
 Huffman::Huffman(int func, string infilename, string outfilename)
 {
+    this->infilename = infilename;
+    this->outfilename = outfilename;
     fin.open(infilename, ios::binary);
     if (!fin) {
         cerr << "open fin error." << endl;
@@ -79,8 +83,46 @@ Huffman::Huffman(int func, string infilename, string outfilename)
         cerr << "open fout error." << endl;
         return;
     }
-    if (func == 1)compress();
-    else if (func == 2)decompress();
+    if (func == 1)compress();//压缩
+    else if (func == 2)decompress();//解压
+    else if (func == 3) {//压缩并验证
+        if (check())cout << "验证无误" << endl;
+        else cout << "验证有问题" << endl;
+    }
+}
+bool Huffman::check()
+{
+    compress();
+    string checkfilename = "a.check";
+    fin.close();
+    fout.close();
+    fin.open(outfilename, ios::binary);
+    fout.open(checkfilename, ios::binary);
+    decompress();
+    fin.close();
+    fout.close();
+    ifstream src, check;
+    src.open(infilename, ios::binary);
+    check.open(checkfilename, ios::binary);
+    char str_src[512] = { 0 }, str_check[512] = {0};
+    string md5_src, md5_check;
+    while (!src.eof() && !check.eof()) {
+        src.read(str_src, 511*sizeof(char));
+        check.read(str_check, 511 * sizeof(char));
+        md5_src = getMD5(str_src);
+        md5_check = getMD5(str_check);
+        if (md5_src != md5_check) {
+            return false;
+        }
+    }
+    if (!src.eof() || !check.eof())return false;
+    /*remove(checkfilename.c_str());*/
+    src.close();
+    check.close();
+    system("del a.check");
+    return true;
+   
+    
 }
 Huffman::~Huffman()
 {

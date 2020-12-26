@@ -19,6 +19,9 @@ signals:
     void form2Back();
 private:
     Ui::Form2 *ui;
+private slots:
+    void on_recoverSrcBtn_clicked();
+    void on_recoverDesBtn_clicked();
 };
 
 #endif // FORM2_H

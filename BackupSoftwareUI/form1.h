@@ -21,6 +21,10 @@ signals:
 
 private:
     Ui::Form1 *ui;
+private slots:
+    void on_backupSrcBtn_clicked();
+    void on_backupDesBtn_clicked();
+
 };
 
 #endif // FORM1_H

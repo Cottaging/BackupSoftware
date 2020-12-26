@@ -26,12 +26,12 @@ HEADERS += \
     cfiledialog.h \
     form1.h \
     form2.h \
-    mainwindow.h
+    mainwindow.h 
 
 FORMS += \
     form1.ui \
     form2.ui \
-    mainwindow.ui
+    mainwindow.ui 
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

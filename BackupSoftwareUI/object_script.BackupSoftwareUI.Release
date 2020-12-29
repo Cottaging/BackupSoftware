@@ -1,0 +1,12 @@
+release/Pack.o
+release/SearchFile.o
+release/cfiledialog.o
+release/form1.o
+release/form2.o
+release/huff.o
+release/main.o
+release/mainwindow.o
+release/moc_cfiledialog.o
+release/moc_form1.o
+release/moc_form2.o
+release/moc_mainwindow.o

@@ -84,6 +84,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QCheckBox" name="checkBox">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>备份后进行数据校验</string>
         </property>

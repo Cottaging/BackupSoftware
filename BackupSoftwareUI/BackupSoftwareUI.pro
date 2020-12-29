@@ -16,17 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Pack.cpp \
+    SearchFile.cpp \
     cfiledialog.cpp \
     form1.cpp \
     form2.cpp \
+    huff.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    Pack.h \
+    SearchFile.h \
+    StdAfx.h \
     cfiledialog.h \
     form1.h \
     form2.h \
-    mainwindow.h 
+    huff.h \
+    mainwindow.h \
+    md5.h
 
 FORMS += \
     form1.ui \

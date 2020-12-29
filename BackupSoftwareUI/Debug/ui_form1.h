@@ -98,6 +98,7 @@ public:
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         checkBox = new QCheckBox(widget_3);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
+        checkBox->setEnabled(true);
 
         horizontalLayout_3->addWidget(checkBox);
 

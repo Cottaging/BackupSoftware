@@ -22,6 +22,7 @@ private:
 private slots:
     void on_recoverSrcBtn_clicked();
     void on_recoverDesBtn_clicked();
+    void on_startRecoverBtn_clicked();
 };
 
 #endif // FORM2_H

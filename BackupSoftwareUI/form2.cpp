@@ -1,6 +1,18 @@
 #include "form2.h"
 #include "ui_form2.h"
 #include <QFileDialog>
+#include <QDebug>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <StdAfx.h>
+#include <Pack.h>
+#include <huff.h>
+QString srcPath=NULL;
+QString desPath2=NULL;
+
+//string srcPathToString;
+//string desPath2ToString;
 Form2::Form2(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form2)
@@ -16,21 +28,6 @@ Form2::Form2(QWidget *parent) :
         emit this->form2Back();
     });
 
-    //点击选取文件按钮，弹出文件对话框
-//    //源路径
-//    connect(ui->recoverSrcBtn,&QPushButton::clicked,[=](){
-//        QString srcPath=QFileDialog::getOpenFileName(this,"选择要解压的压缩包","D:\\TestBackupSoftware");
-
-//        //路径放入lineEdit中
-//        ui->lineEdit->setText(srcPath);
-//    });
-//    //目标路径
-//    connect(ui->recoverDesBtn,&QPushButton::clicked,[=](){
-//        QString desPath=QFileDialog::getExistingDirectory(this,"选择存放位置","D:\\TestBackupSoftware");
-
-//        //路径放入lineEdit中
-//        ui->lineEdit_2->setText(desPath);
-//    });
 }
 
 Form2::~Form2()
@@ -41,17 +38,71 @@ Form2::~Form2()
 //选择源路径
 void Form2::on_recoverSrcBtn_clicked()
 {
-    QString srcPath=QFileDialog::getOpenFileName(this,"选择要解压的压缩包","D:\\TestBackupSoftware");
+    srcPath=QFileDialog::getOpenFileName(this,"选择要解压的压缩包","D:\\TestBackupSoftware","tar files(*.tar)");
 
     //路径放入lineEdit中
     ui->lineEdit->setText(srcPath);
+    //srcPathToString=srcPath.toStdString();
 }
 
 //选择目标路径
 void Form2::on_recoverDesBtn_clicked()
 {
-    QString desPath=QFileDialog::getExistingDirectory(this,"选择存放位置","D:\\TestBackupSoftware");
+     desPath2=QFileDialog::getExistingDirectory(this,"选择存放位置","D:\\TestBackupSoftware");
 
     //路径放入lineEdit中
-    ui->lineEdit_2->setText(desPath);
+    ui->lineEdit_2->setText(desPath2);
+    //desPath2ToString=desPath2.toStdString();
+}
+
+//霍夫曼解压缩
+void mainHuffmanUnzip(){
+    string infilename, outfilename;
+    infilename=srcPath.toStdString();
+    replace(infilename.begin(),infilename.end(),'/','\\');
+
+    outfilename=infilename.substr(0,infilename.length()-4);
+
+    Huffman Test(2, infilename, outfilename);
+    cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
+}
+
+//解包
+void mainUnpack(){
+    //Huffman Test(2, "D:/TestBackupSoftware/mytest.tar", "D:/TestBackupSoftware/mytest");
+    char fileSrcPath[MAX_PATH_LEN] = "";
+    char fileDesPath[MAX_PATH_LEN] = "";
+//    printf("请输入需要解包的文件路径:");
+//    scanf("%s", fileSrcPath);
+    string userInputSrc=srcPath.toStdString();
+    replace(userInputSrc.begin(), userInputSrc.end(), '/', '\\'); //斜杠修改为反斜杠
+    int k = 0;
+    for (k = 0; k < userInputSrc.length(); k++) {
+        fileSrcPath[k] = userInputSrc[k];
+    }
+    fileSrcPath[k-4] = '\0';
+
+    //strcpy(fileSrcPath,"D:\\TestBackupSoftware\\myfolder\\mytar");
+
+//    printf("解包到:");
+//    scanf("%s", fileDesPath);
+
+    string userInputDes=desPath2.toStdString();
+    replace(userInputDes.begin(), userInputDes.end(), '/', '\\'); //斜杠修改为反斜杠
+    int m = 0;
+    for (m = 0; m < userInputDes.length(); m++) {
+        fileDesPath[m] = userInputDes[m];
+    }
+    fileDesPath[m] = '\0';
+
+    Pack upf;
+    upf.UnpackFile(fileSrcPath, fileDesPath);//执行解包
+}
+
+//开始恢复
+void Form2::on_startRecoverBtn_clicked()
+{
+    qDebug()<<"开始恢复";
+    //mainHuffmanUnzip();
+    mainUnpack();
 }

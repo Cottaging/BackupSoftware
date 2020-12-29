@@ -18,12 +18,14 @@ public:
 signals:
     //自定义信号，告诉主场景点击了返回
     void form1Back();
+    //void isValidated();
 
 private:
     Ui::Form1 *ui;
 private slots:
     void on_backupSrcBtn_clicked();
     void on_backupDesBtn_clicked();
+    void on_startBackupBtn_clicked();
 
 };
 

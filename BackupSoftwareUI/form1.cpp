@@ -138,6 +138,27 @@ void mainHuffmanWithValidate(){
     Huffman Test(3, infilename, outfilename);
     //cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
 }
+
+//删除中间文件
+void deleteIntermediateFile(){
+    string infilename, outfilename;
+    outfilename=desPath1.toStdString();
+    replace(outfilename.begin(),outfilename.end(),'/','\\');
+    infilename=outfilename.substr(0,outfilename.length()-4);  //得到所要删除的中间文件的路径
+
+    //string类型转为char *类型
+    char intermediatePath[MAX_PATH_LEN] = "";
+    int k = 0;
+    for (k = 0; k < infilename.length(); k++) {
+        intermediatePath[k] = infilename[k];
+    }
+    intermediatePath[k] = '\0';
+    if (remove(intermediatePath) == 0)
+        printf("Removed %s.", intermediatePath);
+    else
+        perror("remove");
+
+}
 //开始备份
 void Form1::on_startBackupBtn_clicked()
 {
@@ -145,13 +166,14 @@ void Form1::on_startBackupBtn_clicked()
         qDebug() <<"开始验证备份";
         mainPack();
         mainHuffmanWithValidate();
-
-
+        deleteIntermediateFile();
     }else if (ui->checkBox->checkState()==0){
         qDebug()<<"开始普通备份";
         //进行打包过程
         mainPack();
         mainHuffman();
+        //删除中间文件
+        deleteIntermediateFile();
     }
 }
 

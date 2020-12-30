@@ -64,7 +64,6 @@ void mainHuffmanUnzip(){
     outfilename=infilename.substr(0,infilename.length()-4);
 
     Huffman Test(2, infilename, outfilename);
-    cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
 }
 
 //解包
@@ -99,10 +98,34 @@ void mainUnpack(){
     upf.UnpackFile(fileSrcPath, fileDesPath);//执行解包
 }
 
+
+//删除中间文件
+void deleteIntermediateFile2(){
+    string infilename, outfilename;
+    infilename=srcPath.toStdString();
+    replace(infilename.begin(),infilename.end(),'/','\\');
+
+    outfilename=infilename.substr(0,infilename.length()-4);  //得到所要删除的中间文件的路径
+
+    //string类型转为char *类型
+    char intermediatePath[MAX_PATH_LEN] = "";
+    int k = 0;
+    for (k = 0; k < outfilename.length(); k++) {
+        intermediatePath[k] = outfilename[k];
+    }
+    intermediatePath[k] = '\0';
+    if (remove(intermediatePath) == 0)
+        printf("Removed %s.", intermediatePath);
+    else
+        perror("remove");
+
+}
+
 //开始恢复
 void Form2::on_startRecoverBtn_clicked()
 {
     qDebug()<<"开始恢复";
     mainHuffmanUnzip();
     mainUnpack();
+    deleteIntermediateFile2();
 }

@@ -5,7 +5,8 @@
 using namespace std;
 
 void Node:: fillCodebook(string * codebook, string &code) {
-    if(!leftC && !rightC){  //判断条件有问题，此条路径进不去
+    if(!leftC && !rightC){
+        //cout << "test running..." << endl;
         codebook[data] = code;
         return;
     }
@@ -25,7 +26,8 @@ Node:: Node(Node * rc, Node * lc){
     frequency = rc->frequency + lc->frequency;
     rightC = rc;
     leftC = lc;
-    min = (rc->min < lc->min) ? rc->min : lc->min;
+    mymin = (rc->mymin < lc->mymin) ? rc->mymin : lc->mymin;
+    data = '\0';
 }
 
 void Heap:: push(Node *newNode) {
@@ -42,7 +44,7 @@ void Heap:: pop(){
     minHeap [heapSize--] = minHeap[1];
     int currentHeapNode = 1;
     int child = 2;
-    
+
     while (child <= heapSize) {
         if (child < heapSize && *minHeap[child] > *minHeap[child + 1])
             child++;
@@ -54,7 +56,7 @@ void Heap:: pop(){
         currentHeapNode = child;
         child *= 2;
     } // while not at end of heap
-    
+
     minHeap[currentHeapNode] = lastNode;
 }
 
@@ -64,7 +66,7 @@ bool Node::operator> (const Node &rhs){
     if(frequency < rhs.frequency)
         return false;
     if(frequency == rhs.frequency)
-        if(min > rhs.min)
+        if(mymin > rhs.mymin)
             return true;
     return false;
 }
@@ -75,23 +77,19 @@ Huffman::Huffman(int func, string infilename, string outfilename)
     this->outfilename = outfilename;
     fin.open(infilename, ios::binary);
     if (!fin) {
-        //        cerr << "open fin error." << endl;
-        cout << "open fin error." << endl;
+        cerr << "open fin error." << endl;
         return;
     }
     fout.open(outfilename, ios::binary);
     if (!fout) {
-        //cerr << "open fout error." << endl;
-        cout << "open fout error." << endl;
+        cerr << "open fout error." << endl;
         return;
     }
-    if (func == 1){
-        compress();
-    }//压缩
+    if (func == 1)compress();//压缩
     else if (func == 2)decompress();//解压
     else if (func == 3) {//压缩并验证
-        if (check())cout << "validate correct" << endl;
-        else cout << "validate error" << endl;
+        if (check())cout << "验证无误" << endl;
+        else cout << "验证有问题" << endl;
     }
 }
 bool Huffman::check()
@@ -126,7 +124,7 @@ bool Huffman::check()
     system("del a.check");
     return true;
 
-    
+
 }
 Huffman::~Huffman()
 {
@@ -137,14 +135,14 @@ void Huffman::compress()
 {
     unsigned char nextChar;
     // first, calculate the frequencies of each character
-
     fin >> noskipws;
     while (fin >> nextChar)
         frequencies[nextChar]++;
 
+
     Node* root = constructHeap();
     string code;
-    root->fillCodebook(codebook, code);  //此函数存在问题，无法正常运行
+    root->fillCodebook(codebook, code);
 
     putOut();
 }
@@ -194,8 +192,8 @@ void Huffman::decompress()
     }
 
     Node* root = constructHeap();
-    // string code;
-    // root->fillCodebook(codebook, code);
+   // string code;
+   // root->fillCodebook(codebook, code);
     Node* temp = root;
     char L0R1=NULL;
 
@@ -224,7 +222,7 @@ void Huffman::decompress()
                         fout << temp->data;
                         frequencies[temp->data]--;
                         temp = root;
-                        
+
                     }
                     else {
                         return;
@@ -238,7 +236,7 @@ void Huffman::decompress()
                         fout << temp->data;
                         frequencies[temp->data]--;
                         temp = root;
-                        
+
                     }
                     else {
                         return;

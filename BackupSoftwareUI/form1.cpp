@@ -136,7 +136,7 @@ void mainHuffmanWithValidate(){
     infilename=outfilename.substr(0,outfilename.length()-4);
 
     Huffman Test(3, infilename, outfilename);
-    cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
+    //cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
 }
 //开始备份
 void Form1::on_startBackupBtn_clicked()
@@ -144,7 +144,7 @@ void Form1::on_startBackupBtn_clicked()
     if(ui->checkBox->checkState()==2){
         qDebug() <<"开始验证备份";
         mainPack();
-        //mainHuffmanWithValidate();
+        mainHuffmanWithValidate();
 
 
     }else if (ui->checkBox->checkState()==0){

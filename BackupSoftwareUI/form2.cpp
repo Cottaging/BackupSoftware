@@ -103,6 +103,6 @@ void mainUnpack(){
 void Form2::on_startRecoverBtn_clicked()
 {
     qDebug()<<"开始恢复";
-    //mainHuffmanUnzip();
+    mainHuffmanUnzip();
     mainUnpack();
 }

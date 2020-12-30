@@ -8,13 +8,17 @@ class Node{
     friend Huffman;
     unsigned char data;
     unsigned int frequency;
-    unsigned char min;
+    unsigned char mymin;
     Node * leftC;
     Node * rightC;
 public:
-    Node(){}
-    Node(const Node &n){data = n.data; frequency = n.frequency; leftC = n.leftC; rightC = n.rightC;}
-    Node(unsigned char d, unsigned int f): data(d), frequency(f), min(d){}
+    //Node(){}
+    //Node(const Node &n){data = n.data; frequency = n.frequency; leftC = n.leftC; rightC = n.rightC;}
+    //Node(unsigned char d, unsigned int f): data(d), frequency(f), mymin(d){}
+    Node() { data = '\0'; frequency = 0; mymin = '0'; leftC = NULL; rightC = NULL; }
+    Node(const Node& n) { data = n.data; frequency = n.frequency; mymin = '0'; leftC = n.leftC; rightC = n.rightC; }
+    Node(unsigned char d, unsigned int f) : data(d), frequency(f), mymin(d) ,leftC(NULL),rightC(NULL){}
+
     Node(Node *, Node *);
     void fillCodebook(string *, string &);
     bool operator> (const Node &);
@@ -24,7 +28,7 @@ class Heap{
     Node **minHeap;
     int heapSize;
 public:
-    Heap(){heapSize = 0; minHeap = new Node*[257];} 
+    Heap(){heapSize = 0; minHeap = new Node*[257];}
     void push(Node *);
     int size(){return heapSize;}
     void pop();

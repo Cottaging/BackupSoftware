@@ -26,7 +26,8 @@ private slots:
     void on_backupSrcBtn_clicked();
     void on_backupDesBtn_clicked();
     void on_startBackupBtn_clicked();
-
+    int mainPack();
+    void mainHuffman();
 };
 
 #endif // FORM1_H

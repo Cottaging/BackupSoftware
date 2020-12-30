@@ -8,6 +8,7 @@
 #include <StdAfx.h>
 #include <Pack.h>
 #include <huff.h>
+#include <QMessageBox>
 QString srcPath=NULL;
 QString desPath2=NULL;
 
@@ -56,14 +57,25 @@ void Form2::on_recoverDesBtn_clicked()
 }
 
 //霍夫曼解压缩
-void mainHuffmanUnzip(){
+int Form2::mainHuffmanUnpack(){
     string infilename, outfilename;
     infilename=srcPath.toStdString();
     replace(infilename.begin(),infilename.end(),'/','\\');
 
     outfilename=infilename.substr(0,infilename.length()-4);
 
+    if (infilename.length() < 1)
+    {
+        QMessageBox::information(this,"提示","请选择想要解压的压缩包！");
+        return 1;
+    }
+    if (desPath2.length() < 1)
+    {
+        QMessageBox::information(this,"提示","没有指定输出位置！");
+        return 1;
+    }
     Huffman Test(2, infilename, outfilename);
+    return 0;
 }
 
 //解包
@@ -125,7 +137,10 @@ void deleteIntermediateFile2(){
 void Form2::on_startRecoverBtn_clicked()
 {
     qDebug()<<"开始恢复";
-    mainHuffmanUnzip();
-    mainUnpack();
-    deleteIntermediateFile2();
+    if(mainHuffmanUnpack()==0){
+        mainUnpack();
+        deleteIntermediateFile2();
+        QMessageBox::information(this, "提示", "压缩包解压成功！");
+    }
+
 }

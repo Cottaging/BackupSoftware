@@ -1,5 +1,6 @@
 #include "Pack.h"
-
+#include <QMessageBox>
+#include <form1.h>
 Pack::Pack()
 {
 	memset(&Fhead, 0x0, sizeof(Fhead));
@@ -46,7 +47,8 @@ void Pack::PackFile()
 {
 	if (Fhead.Fnum < 1)
 	{
-		cout << "没有添加文件" << endl;
+        cout<<"没有添加文件"<<endl;
+        //QMessageBox::information(Form1,"提示","没有添加文件！");
 		return;
 	}
 	if (strlen(PackedPath) < 1)

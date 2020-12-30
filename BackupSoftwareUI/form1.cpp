@@ -12,6 +12,7 @@
 #include "Pack.h"
 #include <vector>
 #include <huff.h>
+#include <QMessageBox>
 QString srcPathString=NULL;
 QString desPath1=NULL;
 Form1::Form1(QWidget *parent) :
@@ -63,8 +64,8 @@ void Form1::on_backupDesBtn_clicked()
     ui->lineEdit_2->setText(desPath1);
 }
 
-//打包函数
-void mainPack(){
+//打包函数，成功返回0，失败返回1
+int Form1::mainPack(){
     Pack pf;
     vector<string> vec_file;
     vector<string>::iterator f;
@@ -111,11 +112,22 @@ void mainPack(){
 
     //strcpy(fileDesPath,"D:\\TestBackupSoftware\\mytest");
     pf.SetPackedFile(fileDesPath);//设置输出文件
+    if (fNum < 1)
+    {
+        QMessageBox::information(this,"提示","没有添加文件！");
+        return 1;
+    }
+    if (strlen(fileDesPath) < 1)
+    {
+        QMessageBox::information(this,"提示","没有指定输出位置！");
+        return 1;
+    }
     pf.PackFile();//执行打包
+    return 0;
 }
 
 //霍夫曼压缩函数
-void mainHuffman(){
+void Form1::mainHuffman(){
 
     string infilename, outfilename;
     outfilename=desPath1.toStdString();
@@ -123,9 +135,6 @@ void mainHuffman(){
     infilename=outfilename.substr(0,outfilename.length()-4);
 
     Huffman Test(1, infilename, outfilename);
-
-    //cout<<"huffman in out path"<<infilename<<","<<outfilename<<endl;
-    //cout<<"test running...";
 }
 
 //霍夫曼压缩带验证
@@ -164,16 +173,23 @@ void Form1::on_startBackupBtn_clicked()
 {
     if(ui->checkBox->checkState()==2){
         qDebug() <<"开始验证备份";
-        mainPack();
-        mainHuffmanWithValidate();
-        deleteIntermediateFile();
+        if(mainPack()==0){
+            mainHuffmanWithValidate();
+            deleteIntermediateFile();
+            //弹出成功提示信息
+            QMessageBox::information(this, "提示", "备份成功，验证无误！");
+        }
+
     }else if (ui->checkBox->checkState()==0){
         qDebug()<<"开始普通备份";
         //进行打包过程
-        mainPack();
-        mainHuffman();
-        //删除中间文件
-        deleteIntermediateFile();
+        if(mainPack()==0){
+            mainHuffman();
+            //删除中间文件
+            deleteIntermediateFile();
+            //弹出成功提示信息
+            QMessageBox::information(this, "提示", "普通备份成功！");
+        }
     }
 }
 
